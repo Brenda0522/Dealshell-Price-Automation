@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Change to your project directory
-cd ~/Documents/my_project_aug_2023/main_project
+cd ~/Documents/my_project_aug_2023/project_code/main_project
 
 # Add and commit changes
 git add .
