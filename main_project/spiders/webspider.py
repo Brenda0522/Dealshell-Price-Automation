@@ -12,9 +12,15 @@ class WebspiderSpider(scrapy.Spider):
         products = response.css('[class="product-inner product-resize"]')
         for product in products:
             curren_product_url = product.css('div a::attr(href)').get()
-            products_url = ('https://www.nshop.com.vn/products')+ curren_product_url
+            products_url = ('https://www.nshop.com.vn')+ curren_product_url
             yield response.follow(products_url, callback = self.parse_product_page)
 # change pange
+        next_page = response.css('div a.next::attr(href)').get()
+        if next_page is not None:
+            next_page_url = 'https://www.nshop.com.vn' + next_page
+            # else:
+            #     next_page_url = 'https://books.toscrape.com/catalogue/'+ next_page
+            yield response.follow(next_page_url, callback = self.parse)
 # get products data:
     def parse_product_page(self, response):
         product_item = OrderedDict(MainProjectItem())
