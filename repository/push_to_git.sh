@@ -1,10 +1,9 @@
 #!/bin/bash
 
 # Define the path to your project directory
-project_dir="/Users/quangpham/Documents/my_project_aug_2023/project_code/main_project"
+cd /Users/quangpham/Documents/my_project_aug_2023/project_code/main_project
 
 # Change to the project directory
-cd "$project_dir" || exit
 
 # Add and commit changes
 git add .
