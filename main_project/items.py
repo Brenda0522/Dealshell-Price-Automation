@@ -8,5 +8,7 @@ import scrapy
 
 class MainProjectItem(scrapy.Item):
     # define the fields for your item here like:
-    # name = scrapy.Field()
-    pass
+    product_names = scrapy.Field()
+    prices = scrapy.Field()
+    urls = scrapy.Field()
+    product_types = scrapy.Field()

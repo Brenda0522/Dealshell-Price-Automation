@@ -12,7 +12,10 @@ BOT_NAME = "main_project"
 SPIDER_MODULES = ["main_project.spiders"]
 NEWSPIDER_MODULE = "main_project.spiders"
 
-
+FEEDS = {
+    'output_folder/products_datas.json': {'format': 'json', 'overwrite': True},
+    'output_folder/products_datas.csv': {'format': 'csv', 'overwrite': True}
+}
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = "main_project (+http://www.yourdomain.com)"
 
