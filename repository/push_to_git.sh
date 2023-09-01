@@ -13,4 +13,4 @@ git config --global user.email pham29239@gmail.com
 git remote set-url origin https://github.com/binamite/price_comparison_website.git
 
 # Push to the remote repository (main branch)
-git push origin main
+git push origin price_comparison_website
