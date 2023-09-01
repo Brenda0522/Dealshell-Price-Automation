@@ -16,7 +16,7 @@ class WebspiderSpider(scrapy.Spider):
         # product names = response.css('div.product-heading h1::text').get()
         # prices = response.css('div.product-price span::text').get()
         # urls
-        # product types
+        # product types =dddd
         # condition
         # stars
         pass

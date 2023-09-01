@@ -19,4 +19,4 @@ git remote set-url origin 'https://github.com/binamite/price_comparison_website.
 git pull origin project
 
 # Push your changes to the remote "project" branch
-git push -f origin project
+git push origin project
