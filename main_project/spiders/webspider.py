@@ -8,15 +8,15 @@ class WebspiderSpider(scrapy.Spider):
 
 #go to each product in current page
     def parse(self, response):
-        products = products.get('div.col-md-3 col-sm-4 col-xs-6 product-loop')
+        products = products.css('[class="product-inner product-resize"]')
         pass
 # change pang
 # get products data:
     def parse_product_page(self, response):
         # product names = response.css('div.product-heading h1::text').get()
         # prices = response.css('div.product-price span::text').get()
-        # urls
-        # product types =dddd
+        # urls = response.url
+        # product types
         # condition
         # stars
         pass
