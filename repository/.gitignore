@@ -1,0 +1,6 @@
+# .gitignore
+.scrapy/
+__pycache__/
+*.log
+*.json
+*.csv
