@@ -16,7 +16,6 @@ git config --global user.email pham29239@gmail.com
 git remote set-url origin 'https://github.com/binamite/price_comparison_website.git'
 
 # Pull the latest changes from the remote "project" branch
-git pull origin main
-
+git pull --rebase origin main
 # Push your changes to the remote "project" branch
 git push -f origin main
