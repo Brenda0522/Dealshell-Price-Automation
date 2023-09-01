@@ -14,4 +14,3 @@ git remote set-url origin https://github.com/binamite/price_comparison_website.g
 
 # Push to the remote repository (main branch)
 git push origin main
- 
