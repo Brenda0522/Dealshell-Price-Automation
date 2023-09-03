@@ -1,33 +1,69 @@
 import scrapy
 from collections import OrderedDict
 from main_project.items import MainProjectItem
+import json
 
 class WebspiderSpider(scrapy.Spider):
     name = "webspider"
-    allowed_domains = ["www.nshop.com.vn"]
-    start_urls = ["https://www.nshop.com.vn/collections/game-nintendo-switch?page=1"]
 
-#go to each product in current page
+    # Load JSON data from 'list_data.json' file
+    with open('list_data.json', 'r') as json_file:
+        json_data = json.load(json_file)
+            
+    def start_requests(self):
+        # Iterate through the JSON data to start scraping from each specified URL
+        for data in self.json_data:
+            start_url = data.get("start_url")  # Extract the start URL
+            allowed_domain = data.get("allowed_domain")  # Extract allowed domain
+            self.logger.debug(f"Start URL: {start_url}, Allowed Domain: {allowed_domain}")
+            
+            # Start a new request for each URL and provide metadata
+            yield scrapy.Request(start_url, callback=self.parse, meta={'data': data, 'allowed_domain': allowed_domain})
+
     def parse(self, response):
-        products = response.css('[class="product-inner product-resize"]')
+        data = response.meta.get('data')
+        
+        # Extract product elements from the current page using CSS selectors
+        products = response.css(data.get("products"))
         for product in products:
-            curren_product_url = product.css('div a::attr(href)').get()
-            products_url = ('https://www.nshop.com.vn')+ curren_product_url
-            yield response.follow(products_url, callback = self.parse_product_page)
-# change pange
-        next_page = response.css('div a.next::attr(href)').get()
+            # Extract the URL of the current product
+            current_product_url = product.css(data.get("current_product_url")).get()
+            
+            # Construct the full product URL
+            products_url = data.get('products_url') + current_product_url
+            
+            # Follow the product URL and call the parse_product_page callback with metadata
+            yield response.follow(products_url, callback=self.parse_product_page, meta={'data': data})
+        
+        # Change to the next page if available
+        next_page = response.css(data.get("next_page")).get()
         if next_page is not None:
-            next_page_url = 'https://www.nshop.com.vn' + next_page
-            # else:
-            #     next_page_url = 'https://books.toscrape.com/catalogue/'+ next_page
-            yield response.follow(next_page_url, callback = self.parse)
-# get products data:
+            next_page_url = response.urljoin(next_page)
+            
+            # Follow the link to the next page and continue parsing with the same metadata
+            yield response.follow(next_page_url, callback=self.parse, meta={'data': data})
+
     def parse_product_page(self, response):
+        data = response.meta.get('data')
         product_item = OrderedDict(MainProjectItem())
-        product_item['product_names'] = response.css('div.product-heading h1::text').get()
-        product_item['prices'] = response.css('div.product-price span::text').get()
+
+        # Extract 'product_names' data using CSS selector
+        product_item['product_names'] = response.css(data.get('product_names')).get()
+        if not product_item['product_names']:
+            self.logger.error("No 'product_names' found in response.meta")
+
+        # Extract 'prices' data using CSS selector
+        product_item['prices'] = response.css(data.get('prices')).get()
+        if not product_item['prices']:
+            self.logger.error("No 'prices' found in response.meta")
+
+        # Extract 'product_types' data using XPath
+        product_item['product_types'] = response.xpath(data.get('product_types')).get()
+        if not product_item['product_types']:
+            self.logger.error("No 'product_types' found in response.meta")
+
+        # Always set the 'urls' data to the current page's URL
         product_item['urls'] = response.url
-        product_item['product_types'] = response.xpath('//*[@id="breadcrumbs"]/div/nav/ol/li[2]/a/span/text()').get()
-        # product_item['condition']
-        # stars
+
+        # Yield the product item
         yield product_item

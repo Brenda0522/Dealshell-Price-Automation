@@ -1,0 +1,13 @@
+[
+    {
+        "domain": "www.nshop.com.vn",
+        "start_url": "https://www.nshop.com.vn/collections/game-nintendo-switch?page=1",
+        "products": "[class=\"product-inner product-resize\"]",
+        "current_product_url": "div a::attr(href)",
+        "products_url": "https://www.nshop.com.vn",
+        "product_names": "div.product-heading h1::text",
+        "prices": "div.product-price span::text",
+        "product_types": "//*[@id='breadcrumbs']/div/nav/ol/li[2]/a/span/text()",
+        "next_page": "div a.next::attr(href)"
+    }
+]
