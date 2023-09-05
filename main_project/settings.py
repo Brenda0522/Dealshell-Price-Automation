@@ -17,7 +17,7 @@ FEEDS = {
     'output_folder/products_datas.csv': {'format': 'csv', 'overwrite': True}
 }
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
-#USER_AGENT = "main_project (+http://www.yourdomain.com)"
+USER_AGENT = "webspider"
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = True
