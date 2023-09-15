@@ -1,0 +1,30 @@
+import os
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from loop_element_in_json import Next_Page_Clicking
+import time
+import pdb
+current_url = ""
+class Clicking:
+    def __init__(self,current_url):
+        self.current_url = current_url
+        
+    def get_url(self):
+        if current_url == "":
+            get_page = Next_Page_Clicking.get_dynamic_website().web_url
+            return get_page
+        elif current_url != "":
+            get_page = Clicking.current_url
+            self.automate_clicking
+    @classmethod
+    def automate_clicking(cls):
+        driver = webdriver.Chrome("")
+        get_page= cls.get_url()        
+        nex_page = driver.get(f"{get_page}")
+        element = driver.find_element(By.XPATH,"//*[@id=\"game-nintendo-switch-page\"]/body/div[2]/div[7]/div[2]/div[2]/section/div[5]/ul/li[8]/a/i" )
+        element = element.click()
+        current_url = driver.current_url
+        driver.implicitly_wait(30)
+        driver.quit
+        if element is not None:
+            return Clicking.get_url,cls(current_url)

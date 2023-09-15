@@ -1,9 +1,4 @@
-import json
+from automation.selenium.click_nex_page.loop_element_in_json import Next_Page_Clicking
 
-with open('list_data.json', 'r') as json_file:
-    data = json.load(json_file)
-    for item in data:
-        product_names = item.get('current_product_url')
-        current_product_url = item.get("current_product_url")
-        products_url = item.get('products_url') + "/game-pokemon-scarlet-pokemon-violet-double-pack-us-nintendo-switch"
-        print(products_url)
+get_dynamic = Next_Page_Clicking.get_dynamic_website().web_url
+print(get_dynamic)

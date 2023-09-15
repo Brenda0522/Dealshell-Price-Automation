@@ -1,5 +1,6 @@
 [
     {
+        "dynamic_website" : false,
         "domain": "www.nshop.com.vn",
         "start_url": "https://www.nshop.com.vn/collections/game-nintendo-switch?page=1",
         "products": "[class=\"product-inner product-resize\"]",
@@ -11,6 +12,7 @@
         "next_page": "div a.next::attr(href)"
     },
     {
+        "dynamic_website" : true,
         "allowed_domain": "www.herogame.vn",
         "start_url": "https://www.herogame.vn/danh-muc/game-nintendo-switch",
         "products": ".product ul.grid .product-item",
@@ -18,6 +20,8 @@
         "products_url": "https://www.herogame.vn",
         "product_names": ".product-item-view .piv-top .info .title h1::text",
         "prices": ".product-item-view .piv-top .info .intro ul li .price-a ::text",
-        "product_types": "//div[@class=\"breadcrumbs\"]/a[2]/text()"
+        "product_types": "//div[@class=\"breadcrumbs\"]/a[2]/text()",
+        "next_page": "",
+        "next_page_path" : "//*[@id=\"game-nintendo-switch-page\"]/body/div[2]/div[7]/div[2]/div[2]/section/div[5]/ul/li[8]/a/i"
     }
 ]
