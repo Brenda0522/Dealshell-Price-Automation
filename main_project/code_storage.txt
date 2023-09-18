@@ -1,30 +1,50 @@
 import os
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from selenium.common.exceptions import NoSuchElementException
 from loop_element_in_json import Next_Page_Clicking
-import time
-import pdb
+import json
+
 current_url = ""
-class Clicking:
-    def __init__(self,current_url):
-        self.current_url = current_url
-        
-    def get_url(self):
-        if current_url == "":
-            get_page = Next_Page_Clicking.get_dynamic_website().web_url
-            return get_page
-        elif current_url != "":
-            get_page = Clicking.current_url
-            self.automate_clicking
-    @classmethod
-    def automate_clicking(cls):
-        driver = webdriver.Chrome("")
-        get_page= cls.get_url()        
-        nex_page = driver.get(f"{get_page}")
-        element = driver.find_element(By.XPATH,"//*[@id=\"game-nintendo-switch-page\"]/body/div[2]/div[7]/div[2]/div[2]/section/div[5]/ul/li[8]/a/i" )
-        element = element.click()
+url_list = []
+with open("next_page_url.json", "w") as next_page_url:
+    pass
+
+def get_url():
+    if current_url == "":
+        get_page = Next_Page_Clicking.get_dynamic_website().web_url
+        return get_page
+    elif current_url != "":
+        return current_url
+
+def automate_clicking():
+    global url_list
+    global current_url  # Declare current_url as a global variable
+    driver = webdriver.Chrome("")  # Add the path to your Chrome driver
+    next_page_path = Next_Page_Clicking.get_dynamic_website().next_page_path
+    while True:  # Infinite loop to keep clicking until the last page
+        get_page = get_url()
+        current_url = get_page
+        url_list.append(str(current_url))  # Append the current_url to url_list
+
+        next_page_url = f"{get_page}"
+        driver.get(next_page_url)
+
+        try:
+            element = driver.find_element(By.XPATH, f"{next_page_path}")
+            element.click()
+        except NoSuchElementException:
+            next_page(url_list)
+            break  # Exit the loop if the element is not found (last page)
+
         current_url = driver.current_url
-        driver.implicitly_wait(30)
-        driver.quit
-        if element is not None:
-            return Clicking.get_url,cls(current_url)
+
+
+    driver.quit()
+
+# def upload_to_json():
+def next_page(current_url):
+    with open("next_page_url.json", "a") as next_page_url:
+        next_page_url.write(f'{current_url}')
+
+automate_clicking()
