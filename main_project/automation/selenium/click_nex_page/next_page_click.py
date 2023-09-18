@@ -17,7 +17,7 @@ def get_url():
     elif current_url != "":
         return current_url
 
-def automate_clicking():
+def automate_clicking_through_pages():
     global url_list
     global current_url  # Declare current_url as a global variable
     driver = webdriver.Chrome("")  # Add the path to your Chrome driver
@@ -35,8 +35,7 @@ def automate_clicking():
             element.click()
         except NoSuchElementException:
             url_list = double_quoted_list(url_list)
-            next_page(url_list)
-            
+            save_to_json(url_list)
             break  # Exit the loop if the element is not found (last page)
 
         current_url = driver.current_url
@@ -45,18 +44,18 @@ def automate_clicking():
     driver.quit()
 
 # def upload_to_json():
-def next_page(current_url):
+def save_to_json(current_url):
     with open("next_page_url.json", "a") as next_page_url:
         next_page_url.write(f'{current_url}')
 def double_quoted_list(input_list):
     # Create a new list where each item is enclosed in double quotes
     quoted_items = [f'"{item}"' for item in input_list]
     # Join the quoted items with commas and enclose them in square brackets
-    formatted_str = "[" + ", ".join(quoted_items) + "]"
+    formatted_str = "[\n" + ",\n".join(quoted_items) + "\n]"
     return formatted_str
         
 
-automate_clicking()
+automate_clicking_through_pages()
 
 # find out how the code flow throught the programm and give one variable to store the url that the program is currently on then compare those two together and from that we could create a condition to break the infinite loop 
 # im currently strugling with fixing the error that the program can not find the last page, because it canot find the last page so it up date the url data as a list into the json file. if the programe is error it will automaticly log out and won't letme save the data in to that file
