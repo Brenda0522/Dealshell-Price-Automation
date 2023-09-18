@@ -60,4 +60,4 @@ automate_clicking()
 
 # find out how the code flow throught the programm and give one variable to store the url that the program is currently on then compare those two together and from that we could create a condition to break the infinite loop 
 # im currently strugling with fixing the error that the program can not find the last page, because it canot find the last page so it up date the url data as a list into the json file. if the programe is error it will automaticly log out and won't letme save the data in to that file
-# i've done it baby finally able to change all the single quote to double quote therefore i finally done with this fuction hâhhahahah
+# i've done it baby finally able to change all the single quote to double quote therefore i finally done with this fuction hâhhahahah, and i also learn how to do list comprehension which i could  loop in a single line (A list comprehension is a concise way to create a new list by applying an expression to each item in an existing iterable (e.g., a list, tuple, or string)).
