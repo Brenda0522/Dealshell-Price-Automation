@@ -1,7 +1,3 @@
-a = 1
-b = 2
-c = [a,b,a+b]
+from next_page_click import Page_clicker
 
-d = [i for i in c if i < 3]
-
-print(d)
+Page_clicker.automate_clicking_through_pages()
