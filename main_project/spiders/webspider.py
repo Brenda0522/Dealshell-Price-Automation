@@ -1,6 +1,7 @@
 import scrapy
 from collections import OrderedDict
 from main_project.items import MainProjectItem
+from automation.selenium.click_nex_page.next_page_click import Page_clicker
 import json
 
 class WebspiderSpider(scrapy.Spider):
@@ -34,14 +35,20 @@ class WebspiderSpider(scrapy.Spider):
             
             # Follow the product URL and call the parse_product_page callback with metadata
             yield response.follow(products_url, callback=self.parse_product_page, meta={'data': data})
-        
-        # Change to the next page if available
-        next_page = response.css(data.get("next_page")).get()
-        if next_page is not None:
-            next_page_url = response.urljoin(next_page)
-            
+    def parse_next_page(self,response):
+        dynamic_website = response.css(data.get("dynamic_website"))
+        if dynamic_website == False:
+            data = response.meta.get('data')
+            # Change to the next page if available
+            next_page = response.css(data.get("next_page")).get()
+            if next_page is not None:
+                next_page_url = response.urljoin(next_page)
             # Follow the link to the next page and continue parsing with the same metadata
             yield response.follow(next_page_url, callback=self.parse, meta={'data': data})
+        elif dynamic_website == True:
+            Page_clicker.automate_clicking_through_pages()
+            
+            pass
 
     def parse_product_page(self, response):
         data = response.meta.get('data')

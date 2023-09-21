@@ -53,9 +53,8 @@ class Page_clicker:
         # Create a new list where each item is enclosed in double quotes
         quoted_items = [f'"{item}"' for item in input_list]
         # Join the quoted items with commas and enclose them in square brackets
-        formatted_str = "[\n" + ",\n".join(quoted_items) + "\n]"
+        formatted_str = f'[\n{{"next_url": [{",".join(quoted_items)}]}}\n]'
         return formatted_str
-Page_clicker().automate_clicking_through_pages()
 
 
 
