@@ -1,60 +1,69 @@
-import os
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.common.exceptions import NoSuchElementException
-from loop_element_in_json import Next_Page_Clicking
+import scrapy
+from collections import OrderedDict
+from main_project.items import MainProjectItem
 import json
 
-class Page_clicker:
-    with open("next_page_url.json", "w") as next_page_url:
-        pass
-    def __init__(self):
-        self.current_url = ""
-        self.url_list = []
-    def get_url(self):
-        current_url = self.current_url
-        if current_url == "":
-            get_page = Next_Page_Clicking.get_dynamic_website().web_url
-            return get_page
-        elif current_url != "":
-            return current_url
-    def automate_clicking_through_pages(self):
-        url_list = self.url_list
-        current_url = self.current_url  # 
-        driver = webdriver.Chrome("")  # Add the path to your Chrome driver
-        next_page_path = Next_Page_Clicking.get_dynamic_website().next_page_path
-        while True:  # Infinite loop to keep clicking until the last page
-            get_page = self.get_url()
-            current_url = get_page
-            url_list.append(current_url) # Append the current_url to url_list
-            next_page_url = f"{current_url}"
-            driver.get(next_page_url)
-            print(url_list)
-            try:
-                element = driver.find_element(By.XPATH, f"{next_page_path}")
-                element.click()
-            except NoSuchElementException:
-                url_list = self.double_quoted_list(url_list)
-                self.save_to_json(url_list)
-                break  # Exit the loop if the element is not found (last page)
+class WebspiderSpider(scrapy.Spider):
+    name = "webspider"
 
-            ##
-            current_url = driver.current_url
-            ##d
+    # Load JSON data from 'list_data.json' file
+    with open('list_data.json', 'r') as json_file:
+        json_data = json.load(json_file)
+            
+    def start_requests(self):
+        # Iterate through the JSON data to start scraping from each specified URL
+        for data in self.json_data:
+            start_url = data.get("start_url")  # Extract the start URL
+            allowed_domain = data.get("allowed_domain")  # Extract allowed domain
+            self.logger.debug(f"Start URL: {start_url}, Allowed Domain: {allowed_domain}")
+            
+            # Start a new request for each URL and provide metadata
+            yield scrapy.Request(start_url, callback=self.parse, meta={'data': data, 'allowed_domain': allowed_domain})
 
-        driver.quit()
+    def parse(self, response):
+        data = response.meta.get('data')
+        
+        # Extract product elements from the current page using CSS selectors
+        products = response.css(data.get("products"))
+        for product in products:
+            # Extract the URL of the current product
+            current_product_url = product.css(data.get("current_product_url")).get()
+            
+            # Construct the full product URL
+            products_url = data.get('products_url') + current_product_url
+            
+            # Follow the product URL and call the parse_product_page callback with metadata
+            yield response.follow(products_url, callback=self.parse_product_page, meta={'data': data})
+        
+        # Change to the next page if available
+        next_page = response.css(data.get("next_page")).get()
+        if next_page is not None:
+            next_page_url = response.urljoin(next_page)
+            
+            # Follow the link to the next page and continue parsing with the same metadata
+            yield response.follow(next_page_url, callback=self.parse, meta={'data': data})
 
-    # def upload_to_json():
-    @staticmethod
-    def save_to_json(current_url):
-        with open("next_page_url.json", "a") as next_page_url:
-            next_page_url.write(f'{current_url}')
-    @staticmethod
-    def double_quoted_list(input_list):
-        # Create a new list where each item is enclosed in double quotes
-        quoted_items = [f'"{item}"' for item in input_list]
-        # Join the quoted items with commas and enclose them in square brackets
-        formatted_str = "[\n" + ",\n".join(quoted_items) + "\n]"
-        return formatted_str
+    def parse_product_page(self, response):
+        data = response.meta.get('data')
+        product_item = OrderedDict(MainProjectItem())
 
-Page_clicker().automate_clicking_through_pages()
+        # Extract 'product_names' data using CSS selector
+        product_item['product_names'] = response.css(data.get('product_names')).get()
+        if not product_item['product_names']:
+            self.logger.error("No 'product_names' found in response.meta")
+
+        # Extract 'prices' data using CSS selector
+        product_item['prices'] = response.css(data.get('prices')).get()
+        if not product_item['prices']:
+            self.logger.error("No 'prices' found in response.meta")
+
+        # Extract 'product_types' data using XPath
+        product_item['product_types'] = response.xpath(data.get('product_types')).get()
+        if not product_item['product_types']:
+            self.logger.error("No 'product_types' found in response.meta")
+
+        # Always set the 'urls' data to the current page's URL
+        product_item['urls'] = response.url
+
+        # Yield the product item
+        yield product_item
