@@ -48,8 +48,6 @@ class WebspiderSpider(scrapy.Spider):
                 next_page_urls = entry.get("next_url")
                 for next_page_url in next_page_urls:
                     yield response.follow(next_page_url, callback=self.parse, meta={'data': data})
-
-                        
     def parse_product_page(self, response):
         data = response.meta.get('data')
         product_item = OrderedDict(MainProjectItem())
