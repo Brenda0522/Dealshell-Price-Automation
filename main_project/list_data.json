@@ -1,5 +1,6 @@
 [
     {
+        "web_name" : "nshop",
         "dynamic_website" : false,
         "domain": "www.nshop.com.vn",
         "start_url": "https://www.nshop.com.vn/collections/game-nintendo-switch?page=1",
@@ -12,6 +13,7 @@
         "next_page": "div a.next::attr(href)"
     },
     {
+        "web_name" : "herogame",
         "dynamic_website" : true,
         "allowed_domain": "www.herogame.vn",
         "start_url": "https://www.herogame.vn/danh-muc/game-nintendo-switch",
@@ -23,5 +25,18 @@
         "product_types": "//div[@class=\"breadcrumbs\"]/a[2]/text()",
         "next_page": "",
         "next_page_path" : "//*[@id=\"game-nintendo-switch-page\"]/body/div[2]/div[7]/div[2]/div[2]/section/div[5]/ul/li[8]/a/i"
+    },
+    {
+        "web_name" : "muagame",
+        "dynamic_website" : false,
+        "allowed_domain": "www.muagame.vn",
+        "start_url": "https://muagame.vn/game-nintendo-switch.html",
+        "products": ".cate li",
+        "current_product_url": "a::attr(href)",
+        "products_url": "",
+        "product_names": ".rowtop h1::text",
+        "prices": ".product_details .price_and_no .price strong ::text",
+        "product_types": "//*[@id=\"page_goods\"]/section/ol/li[3]/a/span/text()",
+        "next_page": ".pagination a::attr(href)"
     }
 ]

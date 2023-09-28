@@ -1,1 +1,0 @@
-from .webspider import WebspiderSpider
