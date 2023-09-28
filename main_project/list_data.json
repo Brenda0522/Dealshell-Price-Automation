@@ -1,4 +1,5 @@
 [
+    
     {
         "web_name" : "nshop",
         "dynamic_website" : false,
@@ -8,7 +9,7 @@
         "current_product_url": "div a::attr(href)",
         "products_url": "https://www.nshop.com.vn",
         "product_names": "div.product-heading h1::text",
-        "prices": "div.product-price span::text",
+        "prices": ".productDetail--content .product-price span.pro-price::text",
         "product_types": "//*[@id='breadcrumbs']/div/nav/ol/li[2]/a/span/text()",
         "next_page": "div a.next::attr(href)"
     },

@@ -27,7 +27,6 @@ class WebspiderSpider(scrapy.Spider):
             current_product_url = product.css(data.get("current_product_url")).get()
             # Construct the full product URL
             products_url = data.get('products_url') + current_product_url
-            print(products_url)
             # Follow the product URL and call the parse_product_page callback with metadata
             yield response.follow(products_url, callback=self.parse_product_page, meta={'data': data})
         # response.follow(self.parse_next_page,meta={'data': data})
@@ -58,12 +57,10 @@ class WebspiderSpider(scrapy.Spider):
         if not product_item['web_name']:
             self.logger.error("No 'web_name' found in list_data.json")
         product_item['product_names'] = response.css(data.get('product_names')).get()
-        print(response.css(data.get('product_names')).get())
         if not product_item['product_names']:
             self.logger.error("No 'product_names' found in response.meta")
         # Extract 'prices' data using CSS selector
         product_item['prices'] = response.css(data.get('prices')).get()
-        print(response.css(data.get('prices')).get())
         if not product_item['prices']:
             self.logger.error("No 'prices' found in response.meta")
         # Extract 'product_types' data using XPath
