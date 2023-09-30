@@ -11,7 +11,8 @@
         "product_names": "div.product-heading h1::text",
         "prices": ".productDetail--content .product-price span.pro-price::text",
         "product_types": "//*[@id='breadcrumbs']/div/nav/ol/li[2]/a/span/text()",
-        "next_page": "div a.next::attr(href)"
+        "next_page": "div a.next::attr(href)",
+        "next_page_path" : null
     },
     {
         "web_name" : "herogame",
@@ -24,7 +25,7 @@
         "product_names": ".product-item-view .piv-top .info .title h1::text",
         "prices": ".product-item-view .piv-top .info .intro ul li .price-a ::text",
         "product_types": "//div[@class=\"breadcrumbs\"]/a[2]/text()",
-        "next_page": "",
+        "next_page": "null",
         "next_page_path" : "//*[@id=\"game-nintendo-switch-page\"]/body/div[2]/div[7]/div[2]/div[2]/section/div[5]/ul/li[8]/a/i"
     },
     {
@@ -38,6 +39,7 @@
         "product_names": ".rowtop h1::text",
         "prices": ".product_details .price_and_no .price strong ::text",
         "product_types": "//*[@id=\"page_goods\"]/section/ol/li[3]/a/span/text()",
-        "next_page": ".pagination a::attr(href)"
+        "next_page": ".pagination a::attr(href)",
+        "next_page_path" : null
     }
 ]
