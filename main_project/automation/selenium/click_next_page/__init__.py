@@ -1,0 +1,1 @@
+from .next_page_click import Page_clicker
