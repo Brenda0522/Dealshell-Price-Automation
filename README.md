@@ -12,7 +12,8 @@ Real-Time Data: Provides up-to-date price information.
 Technologies Used
 
 Python: For backend development and web scraping logic.
-Selenium: To automate and interact with web browsers for data extraction.
+scrappy: using as scraping frame-wrork
+Selenium: To automate and interact with dynamic wesite.
 How to Use
 
 Visit price_comparison_website.
