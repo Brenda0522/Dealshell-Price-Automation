@@ -26,13 +26,6 @@ To set up the project locally, follow these steps:
 git clone https://github.com/binamite/price_comparison_website.git
 cd price_comparison_website
 // Additional instructions on setting up the environment and dependencies
-Contributing
-
-Contributions to the project are welcome! Please check out our contributing guidelines for detailed information on how you can contribute.
-
-License
-
-This project is licensed under the MIT License.
 
 Contact
 
